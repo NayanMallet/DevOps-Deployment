@@ -1,4 +1,4 @@
-# Store application - front
+# Store application - back
 
 1. Copy the source code to the server
 2. Install the dependencies
