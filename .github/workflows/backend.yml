@@ -46,19 +46,17 @@ jobs:
         id: version
         run: echo "VERSION=$(jq -r .version back/package.json)" >> $GITHUB_ENV
 
-      - name: Build and Push Back-end Image
-        uses: docker/build-push-action@v5
+      - name: Check npm vulnerabilities
+        run: |
+          cd back
+          npm audit --audit-level=high || echo "⚠️ Vulnérabilités détectées, voir logs."
+
+      - name: Scan Docker Image for Vulnerabilities
+        uses: aquasecurity/trivy-action@master
         with:
-          context: ./back
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/store-back:latest
-            ${{ secrets.DOCKER_USERNAME }}/store-back:${{ env.VERSION }}
-            ${{ secrets.DOCKER_USERNAME }}/store-back:${{ github.sha }}
-          build-args: |
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            BCRYPT_SALT_ROUNDS=${{ secrets.BCRYPT_SALT_ROUNDS }}
+        image-ref: "${{ secrets.DOCKER_USERNAME }}/store-back:latest"
+        format: "table"
+        exit-code: 0
 
       - name: Build and Push Back-end Image
         uses: docker/build-push-action@v5
@@ -67,6 +65,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/store-back:latest
+            ${{ secrets.DOCKER_USERNAME }}/store-back:${{ env.VERSION }}
             ${{ secrets.DOCKER_USERNAME }}/store-back:${{ github.sha }}
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}

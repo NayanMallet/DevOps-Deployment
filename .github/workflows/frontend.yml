@@ -27,17 +27,17 @@ jobs:
         id: version
         run: echo "VERSION=$(jq -r .version front/package.json)" >> $GITHUB_ENV
 
-      - name: Build and Push Front-end Image
-        uses: docker/build-push-action@v5
+      - name: Check npm vulnerabilities
+        run: |
+          cd front
+          npm audit --audit-level=high || echo "⚠️ Vulnérabilités détectées, voir logs."
+
+      - name: Scan Docker Image for Vulnerabilities
+        uses: aquasecurity/trivy-action@master
         with:
-          context: ./front
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/store-front:latest
-            ${{ secrets.DOCKER_USERNAME }}/store-front:${{ env.VERSION }}
-            ${{ secrets.DOCKER_USERNAME }}/store-front:${{ github.sha }}
-          build-args: |
-            VITE_API_URL=${{ secrets.VITE_API_URL }}
+        image-ref: "${{ secrets.DOCKER_USERNAME }}/store-front:latest"
+        format: "table"
+        exit-code: 0
 
       - name: Build and Push Front-end Image
         uses: docker/build-push-action@v5
@@ -46,6 +46,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/store-front:latest
+            ${{ secrets.DOCKER_USERNAME }}/store-front:${{ env.VERSION }}
             ${{ secrets.DOCKER_USERNAME }}/store-front:${{ github.sha }}
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
