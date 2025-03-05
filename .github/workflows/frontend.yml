@@ -1,7 +1,5 @@
 name: Build & Push Frontend
 
-#on:
-#  workflow_dispatch
 on:
   push:
     branches:
