@@ -37,9 +37,9 @@ jobs:
       - name: Scan Docker Image for Vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-        image-ref: "${{ secrets.DOCKER_USERNAME }}/store-front:latest"
-        format: "table"
-        exit-code: 0
+          image-ref: "${{ secrets.DOCKER_USERNAME }}/store-front:latest"
+          format: "table"
+          exit-code: 0
 
       - name: Build and Push Front-end Image
         uses: docker/build-push-action@v5
