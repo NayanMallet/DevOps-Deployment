@@ -4,7 +4,7 @@ FROM node:18-alpine AS build
 RUN apk add --no-cache openssl1.1-compat || apk add --no-cache openssl
 
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm ci --only=production  # Installe uniquement les dépendances nécessaires
 COPY . .
 
