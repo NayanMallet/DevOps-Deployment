@@ -1,4 +1,6 @@
-FROM node:18  AS build-back
+FROM node:18-alpine AS build-back
+
+RUN apk add --no-cache openssl1.1-compat || apk add --no-cache openssl
 
 WORKDIR /app
 COPY package*.json ./
@@ -8,5 +10,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma db push && npm run start"]
+CMD ["sh", "-c", "npx prisma generate && npx prisma db push && npm run start"]
 #CMD ["npm", "run", "start"]
