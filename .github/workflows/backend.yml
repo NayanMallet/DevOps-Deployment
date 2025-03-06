@@ -1,4 +1,4 @@
-name: Release Build (Back-end)
+name: Release Build (Back)
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Install & Test
         run: |
