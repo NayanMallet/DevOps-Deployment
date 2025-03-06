@@ -70,3 +70,20 @@ jobs:
           image-ref: "${{ secrets.DOCKER_USERNAME }}/store-back:latest"
           format: "table"
           exit-code: 0
+
+#      - name: Install Scaleway CLI
+#        run: |
+#          curl -fsSL https://github.com/scaleway/scaleway-cli/releases/latest/download/scw-linux-amd64 \
+#           -o /usr/local/bin/scw
+#          chmod +x /usr/local/bin/scw
+#
+#      - name: Configure Scaleway
+#        run: |
+#          scw init non-interactive \
+#            --secret-key="${{ secrets.SCW_SECRET_KEY }}" \
+#            --project-id="${{ secrets.SCW_PROJECT_ID }}"
+#
+#      - name: Update Scaleway Container
+#        run: |
+#          scw container container update store-back \
+#            image=rg.fr-par.scw.cloud/namespace-nayan-mallet/store-back:latest
