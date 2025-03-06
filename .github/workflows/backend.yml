@@ -1,4 +1,4 @@
-name: Release Build (Back)
+name: Release Build (Back-end)
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       - name: Install & Test
         run: |
           cd back
-          npm ci
+          npm install
           npm test
 
   build-and-push:
@@ -32,7 +32,6 @@ jobs:
       - name: Extract version from Git ref
         id: version
         run: |
-          # ex: "refs/tags/back/1.0.2" => "1.0.2"
           TAG_REF=${GITHUB_REF#refs/tags/back/}
           echo "VERSION=${TAG_REF}" >> $GITHUB_ENV
 
