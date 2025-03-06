@@ -54,8 +54,7 @@ jobs:
         run: |
           STATUS="✅ SUCCESS"
           if [ "${{ job.status }}" == "failure" ]; then STATUS="❌ FAILURE"; fi
-          curl -H "Content-Type: application/json" 
-               -X POST \
+          curl -H "Content-Type: application/json" -X POST \
                -d "{\"username\": \"CI/CD Bot\", \"content\": \"$STATUS - Frontend Build: ${{ job.status }}\"}" \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
 
